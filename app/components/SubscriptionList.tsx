@@ -1,40 +1,22 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
-
-const SUBSCRIPTION_KEY = "feed-url-list";
+import { FormEvent, useState } from "react";
+import { addSub, getSubs, removeSub } from "../lib/storage";
 
 export default function SubscriptionList() {
-  const [subscriptions, setSubscriptions] = useState<string[]>([]);
-
-  const getSubs = () => {
-    const stoarge = window.localStorage.getItem(SUBSCRIPTION_KEY);
-    const listOfSubscriptions = stoarge ? (JSON.parse(stoarge) as string[]) : [];
-
-    return listOfSubscriptions;
-  };
+  const [subscriptions, setSubscriptions] = useState<string[]>(getSubs());
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    const listOfSubscriptions = getSubs();
     const newItem = (e.currentTarget?.feedurl?.value as string) || "";
-    if (newItem) {
-      window.localStorage.setItem(SUBSCRIPTION_KEY, JSON.stringify([...listOfSubscriptions, newItem]));
-      setSubscriptions(getSubs());
-    }
+    addSub(newItem);
+    setSubscriptions(getSubs());
     e.preventDefault();
   };
 
-  const removeSub = (sub: string) => {
-    const listOfSubscriptions = getSubs();
-    if (sub) {
-      window.localStorage.setItem(SUBSCRIPTION_KEY, JSON.stringify(listOfSubscriptions.filter((item) => item !== sub)));
-      setSubscriptions(getSubs());
-    }
-  };
-
-  useEffect(() => {
+  const handleRemove = (sub: string) => {
+    removeSub(sub);
     setSubscriptions(getSubs());
-  }, []);
+  };
 
   return (
     <div>
@@ -46,7 +28,7 @@ export default function SubscriptionList() {
       <ul>
         {subscriptions.map((sub) => (
           <li key={sub}>
-            {sub} <a onClick={() => removeSub(sub)}>Remove subscription</a>{" "}
+            {sub} <a onClick={() => handleRemove(sub)}>Remove subscription</a>{" "}
           </li>
         ))}
       </ul>

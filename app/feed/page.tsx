@@ -1,8 +1,5 @@
-
+import SubscriptionFeed from "../components/SubscriptionFeed";
 
 export default function Feed() {
-  return (
-    // <div className={styles.page}>
-    <>Feed</>
-  );
+  return <SubscriptionFeed />;
 }
