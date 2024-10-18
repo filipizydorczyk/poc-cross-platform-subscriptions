@@ -2,9 +2,10 @@
 
 import puppeteer from "puppeteer";
 
-export default async function SubscriptionFetcher({ subs }: { subs: string[] }) {
+export default async function SubscriptionFetcher(props: { subs: string[] }) {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
+  const subs = props?.subs || [];
 
   const images = await Promise.all(
     subs.map(async (sub) => {
@@ -22,8 +23,8 @@ export default async function SubscriptionFetcher({ subs }: { subs: string[] }) 
   await browser.close();
   return (
     <div>
-      {images.map((im) => (
-        <img src={`data:image/png;base64, ${im}`} />
+      {images.map((im, index) => (
+        <img key={index} src={`data:image/png;base64, ${im}`} />
       ))}
     </div>
   );
