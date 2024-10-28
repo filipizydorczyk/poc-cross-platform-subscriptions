@@ -3,7 +3,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 1. Create proof of concept of a service that allows you to subscribe to a variety of content across the website without having accounts. Because it's just a poc only YouTube somehow works, but it was never about creating a full service but about testing how it could work.
 2. Learn more about how SSR works in Next.JS. Because I do web scraping with an actual headless browser and I keep data needed for that in local storage, it turned into a fun exercise where I had to maneuver between SSR and client components.
 
-https://github.com/filipizydorczyk/poc-cross-platform-subscriptions/raw/refs/heads/main/video.mp4
+![Watch video](https://github.com/filipizydorczyk/poc-cross-platform-subscriptions/raw/refs/heads/main/video.mp4)
 
 # Concept
 
