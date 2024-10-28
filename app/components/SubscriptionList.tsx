@@ -4,18 +4,21 @@ import { FormEvent, useState } from "react";
 import { addSub, getSubs, removeSub } from "../lib/storage";
 
 export default function SubscriptionList() {
-  const [subscriptions, setSubscriptions] = useState<string[]>(getSubs());
+  const [subscriptions, setSubscriptions] = useState<string[]>([
+    ...getSubs().listOfSubscriptions,
+    ...getSubs().invalidSubscriptions,
+  ]);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     const newItem = (e.currentTarget?.feedurl?.value as string) || "";
     addSub(newItem);
-    setSubscriptions(getSubs());
+    setSubscriptions([...getSubs().listOfSubscriptions, ...getSubs().invalidSubscriptions]);
     e.preventDefault();
   };
 
   const handleRemove = (sub: string) => {
     removeSub(sub);
-    setSubscriptions(getSubs());
+    setSubscriptions([...getSubs().listOfSubscriptions, ...getSubs().invalidSubscriptions]);
   };
 
   return (

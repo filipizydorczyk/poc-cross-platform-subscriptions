@@ -2,21 +2,25 @@ const SUBSCRIPTION_KEY = "feed-url-list";
 
 export const getSubs = () => {
   const stoarge = window.localStorage.getItem(SUBSCRIPTION_KEY);
-  const listOfSubscriptions = stoarge ? (JSON.parse(stoarge) as string[]) : [];
+  const rawStorage = stoarge ? (JSON.parse(stoarge) as string[]) : [];
+  const listOfSubscriptions = rawStorage.filter((sub) => sub.includes("youtube"));
+  const invalidSubscriptions = rawStorage.filter((sub) => !sub.includes("youtube"));
 
-  return listOfSubscriptions;
+  return { listOfSubscriptions, invalidSubscriptions };
 };
 
 export const removeSub = (sub: string) => {
-  const listOfSubscriptions = getSubs();
+  const { listOfSubscriptions, invalidSubscriptions } = getSubs();
+  const subs = [...listOfSubscriptions, ...invalidSubscriptions];
   if (sub) {
-    window.localStorage.setItem(SUBSCRIPTION_KEY, JSON.stringify(listOfSubscriptions.filter((item) => item !== sub)));
+    window.localStorage.setItem(SUBSCRIPTION_KEY, JSON.stringify(subs.filter((item) => item !== sub)));
   }
 };
 
 export const addSub = (newItem: string) => {
-  const listOfSubscriptions = getSubs();
+  const { listOfSubscriptions, invalidSubscriptions } = getSubs();
+  const subs = [...listOfSubscriptions, ...invalidSubscriptions];
   if (newItem) {
-    window.localStorage.setItem(SUBSCRIPTION_KEY, JSON.stringify([...listOfSubscriptions, newItem]));
+    window.localStorage.setItem(SUBSCRIPTION_KEY, JSON.stringify([...subs, newItem]));
   }
 };

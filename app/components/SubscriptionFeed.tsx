@@ -9,6 +9,18 @@ const SubscriptionFetcher = dynamic(() => import("./SubscriptionFetcher"), {
 });
 
 export default function SubscriptionFeed() {
-  const subs = getSubs();
-  return <>{subs && <SubscriptionFetcher subs={subs} />}</>;
+  const { listOfSubscriptions, invalidSubscriptions } = getSubs();
+  return (
+    <article>
+      <aside>
+        <p>This subscriptions are not suported yet:</p>
+        <ul>
+          {invalidSubscriptions.map((sub) => (
+            <li key={sub}>{sub}</li>
+          ))}
+        </ul>
+      </aside>
+      {listOfSubscriptions && <SubscriptionFetcher subs={listOfSubscriptions} />}
+    </article>
+  );
 }

@@ -1,4 +1,3 @@
-import { init } from "next/dist/compiled/webpack/webpack";
 import puppeteer, { Browser, Page } from "puppeteer";
 
 const ACCEPT_SELECTOR =

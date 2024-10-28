@@ -3,23 +3,28 @@
 import { ChromeBrowser } from "../lib/browser";
 
 export default async function SubscriptionFetcher(props: { subs: string[] }) {
-  const browser = new ChromeBrowser();
   const subs = props?.subs || [];
-  let feed: string[] = [];
+  let feed: {
+    link: string;
+    img: string;
+  }[] = [];
 
-  await browser.init();
-  const images = await Promise.all(
+  await Promise.all(
     subs.map(async (sub) => {
-      const data = (await browser.fetchTheFeed(sub)) || [];
-      feed = [...feed, ...data.map((dt) => dt.img)];
+      const browser = new ChromeBrowser();
+      await browser.init();
+      const data = (await browser.fetchTheFeed(sub))?.filter((sub) => !!sub.img) || [];
+      feed = [...feed, ...data];
+      await browser.close();
     })
   );
 
-  await browser.close();
   return (
-    <div>
+    <div style={{ display: "flex", gap: "1rem", marginTop: "2rem", flexWrap: "wrap" }}>
       {feed.map((im, index) => (
-        <img key={index} src={im} />
+        <a href={im.link} key={index} target="_blank">
+          <img style={{ borderRadius: "1rem", cursor: "pointer" }} src={im.img} />
+        </a>
       ))}
     </div>
   );
